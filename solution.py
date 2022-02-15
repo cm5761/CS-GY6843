@@ -1,34 +1,34 @@
-
-### welcome_assignment_answers
-### Input - All eight questions given in the assignment.
-### Output - The right answer for the specific question.
-
-def welcome_assignment_answers(question):
-    #The student doesn't have to follow the skeleton for this assignment.
-    #Another way to implement is using a "case" statements similar to C.
-    if question == "Are encoding and encryption the same? - Yes/No":
-        answer = "No"
-    elif question == "Is it possible to decrypt a message without a key? - Yes/No":
-        answer = "No"
-    elif question == "Is it possible to decode a message without a key? - Yes/No":
-        answer = "Yes"
-    elif question == "Is a hashed message supposed to be un-hashed? - Yes/No":
-        answer = "No"
-    elif question == "What is the MD5 hashing value to the following message: 'NYU Computer Networking' - Use MD5 hash generator and use the answer in your code":
-        answer = "42b76fe51778764973077a5a94056724"
-    elif question == "Is MD5 a secured hashing algorithm? - Yes/No":
-        answer = "No"
-    elif question == "What layer from the TCP/IP model the protocol DHCP belongs to? - The answer should be a numeric number":
-        answer = 5
-    elif question == "What layer of the TCP/IP model the protocol TCP belongs to? - The answer should be a numeric number":
-        answer = 4
-    elif question == "In Slack, what is the secret passphrase posted in the #lab-python-getting-started channel posted by a TA?":
-        answer = "mtls"
-    return(answer)
-# Complete all the questions.
+# import socket module
+from socket import *
+# In order to terminate the program
+import sys
 
 
-if __name__ == "__main__":
-    #use this space to debug and verify that the program works
-    debug_question = "Are encoding and encryption the same? - Yes/No"
-    print(welcome_assignment_answers(debug_question))
+def webServer(port=13331):
+  serverSocket = socket(AF_INET, SOCK_STREAM)
+  serverPort = 6789
+  serverSocket.bind(("", serverPort))
+  serverSocket.listen(1)
+
+  while True:
+    print'Ready to serve...'
+    connectionSocket, addr = serverSocket.accept() 
+    try:
+    message =  connectionSocket.recv(1024)
+    print(message,’::’), message.split()[0], ‘:’, message.split()[1]
+    filename = message.split()[1]
+    print(filename), ‘||’ , filename[1:]
+    f = open(filename[1:])
+    outputdata = f.read()
+    connectionSocket.send(‘\nHTTP/1.1 200 OK\n\n’)
+    
+    for i in range(0, len(outputdata)):
+      connectionSocket.send(outputdata[i].encode())
+
+    connectionSocket.send("\r\n".encode())
+    connectionSocket.close()
+  except IOError:
+    connectionSocket.send(‘HTTP/1.1 404 Not Found\r\n’)
+    connectionSocket.send("<html><head></head><body>404 Not Found</body></html>\r\n")
+  connectionSocket.close()
+
