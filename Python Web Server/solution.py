@@ -44,6 +44,7 @@ def webServer(port=13331):
         #Fill in start
         connectionSocket.send("<html><head></head><body>404 Not Found</body></html>\r\n".encode())
         #Fill in end
+        connectionSocket.close()
 
     except (ConnectionResetError, BrokenPipeError):
       pass
