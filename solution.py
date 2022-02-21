@@ -1,12 +1,11 @@
 from socket import *
 
-
 def smtp_client(port=1025, mailserver='127.0.0.1'):
     msg = "\r\n My message"
     endmsg = "\r\n.\r\n"
 
     # Choose a mail server (e.g. Google mail server) if you want to verify the script beyond GradeScope
-    mailserver = ("imap.gmail.com", 993)
+    mailserver = ("smtp.gmail.com", 465)
     # Create socket called clientSocket and establish a TCP connection with mailserver and port
 
     # Fill in start
@@ -29,9 +28,9 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send MAIL FROM command and print server response.
     # Fill in start
-    username =  "abc@example.com"                     #the username for your server
+    username = "copeland.myrie@gmail.com"                    #the username for your server
     password = "pswd"
-    base64_str = ("\x00"+username+"\x00"+password).encode()
+    base64_str = ("\x00"+username+"\x00"+password)
     base64_str = base64.b64encode(base64_str)
     authMsg = "AUTH PLAIN ".encode()+base64_str+"\r\n".encode()
     clientSocket.send(authMsg)
@@ -43,7 +42,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send RCPT TO command and print server response.
     # Fill in start
-    mailFrom = "MAIL FROM: <anyemailid@gmail.com> \r\n"
+    mailFrom = "MAIL FROM: <copeland.myrie@gmail.com> \r\n"
     clientSocket.send(mailFrom.encode())
     recv2 = clientSocket.recv(1024)
     print("After MAIL FROM command: "+recv2)
@@ -53,7 +52,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send DATA command and print server response.
     # Fill in start
-    rcptTo = "RCPT TO: <destination@gmail.com> \r\n"
+    rcptTo = "RCPT TO: <cm5761@nyu.edu> \r\n"
     clientSocket.send(rcptTo.encode())
     recv3 = clientSocket.recv(1024)
     print("After RCPT TO command: "+recv3)
