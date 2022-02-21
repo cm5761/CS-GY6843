@@ -28,11 +28,11 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send MAIL FROM command and print server response.
     # Fill in start
-    mail_command = ('MAIL FROM: &..6@gmail.com>rn')
+    mail_command = "MAIL FROM: &..6@gmail.com>\r\n"
     clientSocket.send(mail_command.encode())
-    recv_auth = clientSocket.recv(1024).decode()
-    print(recv_auth)
-    if recv_auth[:3] != '250':
+    recv2 = clientSocket.recv(1024).decode()
+    print(recv2)
+    if recv2[:3] != '250':
        print('250 reply not received from server.')
     # Fill in end
 
@@ -58,7 +58,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send message data.
     # Fill in start
-    subject = "Subject: SMTP mail client testing \r\n\r\n" 
+    subject = "Subject: SMTP HW\r\n\r\n" 
     clientSocket.send(subject.encode())
     message = raw_input("Enter your message: \r\n")
     clientSocket.send(message.encode())
@@ -67,8 +67,8 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Message ends with a single period.
     # Fill in start
-    recv_msg = clientSocket.recv(1024)
-    print("Response after sending message body:"+recv_msg.decode())
+    recv_msg = clientSocket.recv(1024).decode()
+    print(recv_msg)
     clientSocket.send("QUIT\r\n".encode())
     message=clientSocket.recv(1024).decode()
     print (message)
