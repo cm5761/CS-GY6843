@@ -4,11 +4,10 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     msg = "\r\n My message"
     endmsg = "\r\n.\r\n"
 
-    # Choose a mail server (e.g. Google mail server) if you want to verify the script beyond GradeScope
-    mailserver = ("smtp.gmail.com", 465)
     # Create socket called clientSocket and establish a TCP connection with mailserver and port
 
     # Fill in start
+    mailserver = ("127.0.0.1", 1025)
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(mailserver)
     # Fill in end
@@ -60,8 +59,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     # Fill in start
     subject = "Subject: SMTP HW\r\n\r\n" 
     clientSocket.send(subject.encode())
-    message = raw_input("Enter your message: \r\n")
-    clientSocket.send(message.encode())
+    clientSocket.send(msg.encode())
     clientSocket.send(endmsg.encode())
     # Fill in end
 
