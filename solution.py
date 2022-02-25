@@ -52,12 +52,12 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         header = recPacket[20:28]
         icmpType, code, checksum, packetID, sequence = struct.unpack("bbHHh", header)
     
-        if type != 0:
-        	return "type error"
+        if icmpType != 0:
+        	return "ICMP Type error"
         if code != 0:
-        	return "code error"
-        if ID != id:
-        	return "id error"
+        	return "Code error"
+        if packetID != id:
+        	return "Packet ID error"
 
         ip_header = struct.unpack('!BBHHHBBH4s4s', recPacket[:20])
         length = len(recPacket) - 20
