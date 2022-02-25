@@ -56,7 +56,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         	return "ICMP Type error"
         if code != 0:
         	return "Code error"
-        if packetID != id:
+        if ID != packetID:
         	return "Packet ID error"
 
         ip_header = struct.unpack('!BBHHHBBH4s4s', recPacket[:20])
