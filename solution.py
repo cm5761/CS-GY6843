@@ -59,7 +59,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         if ID != packetID:
         	return "Packet ID error"
 
-        ip_header = struct.unpack('!BBHHHBBH4s4s', recPacket[:20])
+        ip_header = struct.unpack(recPacket[:20])
         length = len(recPacket) - 20
         addr = socket.inet_ntoa(ip_header[8])
         ttl = ip_header[5]
