@@ -36,7 +36,6 @@ def checksum(string):
 
 def receiveOnePing(mySocket, ID, timeout, destAddr):
     timeLeft = timeout
-    global packageRev,timeRTT
 
     while 1:
         startedSelect = time.time()
@@ -49,20 +48,19 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         recPacket, addr = mySocket.recvfrom(1024)
 
         # Fill in start
+
         # Fetch the ICMP header from the IP packet
-        icmpHeader = recPacket[20:28]
-        timeRTT = []
-        requestType, code, revChecksum, revId, revSequence = struct.unpack('bbHHh',icmpHeader)
-        if ID == revId:
-            bytesInDouble = struct.calcsize('d')
-            timeData = struct.unpack('d',recPacket[28:28 + bytesInDouble])[0]
-            timeRTT.append(timeReceived - timeData)
-                += 1
-            return timeReceived - timeData
-        else:
-            return "ID is not the same!"
+        icmph = recPacket[20:28]
+        type, code, checksum, pID, sq = struct.unpack("bbHHh", icmph)
+  
+        print "The header received in the ICMP reply is ",type, code, checksum, pID, sq
+        if pID == ID:
+            bytesinDbl = struct.calcsize("d")
+            timeSent = struct.unpack("d", recPacket[28:28 + bytesinDbl])[0]
+            rtt=timeReceived - timeSent   
+            print "RTT is : "
+            return rtt
         # Fill in end
-        
         timeLeft = timeLeft - howLongInSelect
         if timeLeft <= 0:
             return "Request timed out."
