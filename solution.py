@@ -36,6 +36,7 @@ def checksum(string):
 
 def receiveOnePing(mySocket, ID, timeout, destAddr):
     timeLeft = timeout
+    global packageRev,timeRTT
 
     while 1:
         startedSelect = time.time()
@@ -56,7 +57,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
             bytesInDouble = struct.calcsize('d')
             timeData = struct.unpack('d',recPacket[28:28 + bytesInDouble])[0]
             timeRTT.append(timeReceived - timeData)
-            packageRev += 1
+                += 1
             return timeReceived - timeData
         else:
             return "ID is not the same!"
