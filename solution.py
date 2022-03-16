@@ -49,18 +49,16 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
 
         # Fill in start
         # Fetch the ICMP header from the IP packet
-        header = recPacket[20:28]
-        icmpType, code, checksum, packetID, sequence = struct.unpack("bbHHh", header)
-    
-        ip_header = struct.unpack('!BBHHHBBH4s4s', recPacket[:20])
-        length = len(recPacket) - 20
-        addr = socket.inet_ntoa()
-        ttl = ip_header[5]
-
-        sendTime, = struct.unpack('d', recPacket[28:])
-        rtt = (timeReceived - sendTime) * 1000
-               
-        return '{} bytes from {}: seq = {} ttl = {} time = {:.3f} ms'.format(length, addr, sequence, ttl, rtt)
+        icmpHeader = recPacket[20:28]
+        requestType, code, revChecksum, revId, revSequence = struct.unpack('bbHHh',icmpHeader)
+        if ID == revId:
+            bytesInDouble = struct.calcsize('d')
+            timeData = struct.unpack('d',recPacket[28:28 + bytesInDouble])[0]
+            timeRTT.append(timeReceived - timeData)
+            packageRev += 1
+            return timeReceived - timeData
+        else:
+            return "ID is not the same!"
         # Fill in end
         
         timeLeft = timeLeft - howLongInSelect
