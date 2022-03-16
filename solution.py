@@ -58,7 +58,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
             bytesinDbl = struct.calcsize("d")
             timeSent = struct.unpack("d", recPacket[28:28 + bytesinDbl])[0]
             rtt=timeReceived - timeSent   
-            print "RTT is : "
+            print ("RTT is : ")
             return rtt
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
