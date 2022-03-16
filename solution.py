@@ -53,7 +53,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         icmph = recPacket[20:28]
         type, code, checksum, pID, sq = struct.unpack("bbHHh", icmph)
   
-        print "The header received in the ICMP reply is ",type, code, checksum, pID, sq
+        print ("The header received in the ICMP reply is ",type, code, checksum, pID, sq)
         if pID == ID:
             bytesinDbl = struct.calcsize("d")
             timeSent = struct.unpack("d", recPacket[28:28 + bytesinDbl])[0]
