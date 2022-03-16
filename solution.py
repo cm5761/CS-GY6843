@@ -50,6 +50,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         # Fill in start
         # Fetch the ICMP header from the IP packet
         icmpHeader = recPacket[20:28]
+        timeRTT = []
         requestType, code, revChecksum, revId, revSequence = struct.unpack('bbHHh',icmpHeader)
         if ID == revId:
             bytesInDouble = struct.calcsize('d')
