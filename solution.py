@@ -57,7 +57,6 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
             bytes_ICMP = struct.calcsize('d')
             timeStamps = struct.unpack('d', recPacket[28:28 + bytes_ICMP])
             time_of_sent_ICMP = timeStamps[0]
-            print (vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)),str(round(packet_max, 2)), str(round(stdev(stdev_var),2))])
             return timeReceived - time_of_sent_ICMP
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
@@ -114,7 +113,7 @@ def ping(host, timeout=1):
     print("Pinging " + dest + " using Python:")
     print("")
     # Calculate vars values and return them
-    #  vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),str(round(stdev(stdev_var), 2))]
+    vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)),str(round(stdev(stdev_var), 2))]
     # Send ping requests to a server separated by approximately one second
     for i in range(0,4):
         delay = doOnePing(dest, timeout)
