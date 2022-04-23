@@ -38,32 +38,31 @@ def checksum(string):
     return answer
 
 def build_packet():
-    #Fill in start
     # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
     # packet to be sent was made, secondly the checksum was appended to the header and
     # then finally the complete packet was sent to the destination.
 
     # Make the header in a similar way to the ping exercise.
-	setID = os.getpid() & 0xffff
+    setID = os.getpid() & 0xFFFF
+
+    # Make a dummy header with a 0 checksum.
+    # struct -- Interpret strings as packed binary data
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, setID, 1)
+    data = struct.pack("d", time.time())
+
+    # Calculate the checksum on the data and the dummy header.
     # Append checksum to the header.
+    myChecksum = checksum(header + data)    
+    if sys.platform == 'darwin':
+        myChecksum = socket.htons(myChecksum) & 0xffff
+        #Convert 16-bit integers from host to network byte order.
+    else:
+        myChecksum = htons(myChecksum)
 
-	header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
-	data = struct.pack("d", time.time())
-	checksum1 = checksum(header + data)
-	if sys.platform == 'darwin':
-		mychecksum = hton(checksum1) & 0xffff
-	else:
-		checksum1 = htons(checksum1)
-	
-	#header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
-    # Don’t send the packet yet , just return the final packet in this function.
-    #Fill in end
-
-    # So the function ending should look like this
-
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, setID, 1)
     packet = header + data
     return packet
-
+    
 def get_route(hostname):
     timeLeft = TIMEOUT
     tracelist1 = [] #This is your list to use when iterating through each trace 
@@ -75,8 +74,8 @@ def get_route(hostname):
 
             #Fill in start
             # Make a raw socket named mySocket
-			icmp = socket.getprotobyname("icmp")
-			mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
+            icmp = socket.getprotobyname("icmp")
+            mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
             #Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
