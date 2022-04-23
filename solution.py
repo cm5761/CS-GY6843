@@ -54,7 +54,7 @@ def build_packet():
     # Append checksum to the header.
     myChecksum = checksum(header + data)    
     if sys.platform == 'darwin':
-        myChecksum = socket.htons(myChecksum) & 0xffff
+        myChecksum = htons(myChecksum) & 0xffff
         #Convert 16-bit integers from host to network byte order.
     else:
         myChecksum = htons(myChecksum)
@@ -75,7 +75,7 @@ def get_route(hostname):
             #Fill in start
             # Make a raw socket named mySocket
             icmp = getprotobyname("icmp")
-            mySocket = socket(socket.AF_INET, socket.SOCK_RAW, icmp)
+            mySocket = socket(AF_INET, SOCK_RAW, icmp)
             #Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
