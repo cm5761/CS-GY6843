@@ -47,7 +47,7 @@ def build_packet():
 
     # Make a dummy header with a 0 checksum.
     # struct -- Interpret strings as packed binary data
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, setID, 1)
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, 0, setID, 1)
     data = struct.pack("d", time.time())
 
     # Calculate the checksum on the data and the dummy header.
